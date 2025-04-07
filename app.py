@@ -25,14 +25,7 @@ init_db()
 
 @app.route('/')
 def homepage():
-    return {
-        "mensagem": "Bem-vindo à Biblioteca Vai na Web!",
-        "instruções": {
-            "cadastrar_livro": "Envie um POST para /doar com os dados do livro",
-            "listar_livros": "Acesse GET /livros para ver todos os livros cadastrados",
-        }
-    }
-
+    return '<h2>API de Livros VNW!<h2>'
 #rota para cadastrar um novo livro POST
 @app.route('/doar', methods=['POST'])
 def doar():
@@ -64,11 +57,11 @@ def listar_livros():
         
         for livro in livros:
             dici_livros ={
-                "id": livros[0],
-                "titulo": livros[1],
-                "categoria": livros[2],
-                "autor": livros[3],
-                "imagem_url": livros[4],
+                "id": livro[0],
+                "titulo": livro[1],
+                "categoria": livro[2],
+                "autor": livro[3],
+                "imagem_url": livro[4],
             }
             livros_listados.append(dici_livros)
         #retorna a lista no formato json
@@ -80,7 +73,7 @@ def deletar_livro(livro_id):
     #conectar ao db e criar um cursor para executar os comandos
     with sqlite3.connect('database.db') as conn:
         cursor = conn.cursor()
-        cursor.execute("DELETE FROM livros WHERE id = ?", (livro_id))
+        cursor.execute("DELETE FROM livros WHERE id = ?", (livro_id,))
         conn.commit()
     #verifica se o livro foi encontrado
     if cursor.rowcount == 0:
